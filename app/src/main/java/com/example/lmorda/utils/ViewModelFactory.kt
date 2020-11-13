@@ -9,6 +9,9 @@ import com.example.lmorda.data.RepoRepository
 import com.example.lmorda.details.RepoDetailsViewModel
 import com.example.lmorda.repos.ReposViewModel
 
+/**
+ * Factory for all ViewModels.
+ */
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(
     private val repoRepository: RepoRepository,

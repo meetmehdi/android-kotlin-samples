@@ -1,8 +1,11 @@
 package com.example.lmorda.data
 
-sealed class Result<out R> {
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
+import com.example.lmorda.model.Repo
 
-    data class Success<out T>(val data: T) : Result<T>()
-    data class Error(val exception: Exception) : Result<Nothing>()
-
-}
+data class Result(
+    val data: LiveData<PagedList<Repo>>,
+    val networkErrors: LiveData<String>,
+    val loading: LiveData<Boolean>
+)

@@ -1,7 +1,10 @@
 package com.example.lmorda.repos
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lmorda.R
 import com.example.lmorda.model.Repo
 import com.example.lmorda.utils.Utils
 import kotlinx.android.synthetic.main.repo_item.view.*
@@ -19,5 +22,13 @@ class RepoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         } ?: run { itemView.description.visibility = View.GONE }
         itemView.stars.text = Utils.thousandsToKs(repo.stargazers_count)
         itemView.forks.text = Utils.thousandsToKs(repo.forks)
+    }
+
+    companion object {
+        fun create(parent: ViewGroup): RepoViewHolder {
+            val view =
+                LayoutInflater.from(parent.context).inflate(R.layout.repo_item, parent, false)
+            return RepoViewHolder(view)
+        }
     }
 }

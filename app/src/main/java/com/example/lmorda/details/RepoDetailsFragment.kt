@@ -16,9 +16,7 @@ import com.example.lmorda.TAG_REPO_DETAILS_FRAGMENT
 import com.example.lmorda.model.Repo
 import com.example.lmorda.utils.Utils
 import com.example.lmorda.utils.getViewModelFactory
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_repo_details.*
-import kotlinx.android.synthetic.main.fragment_repos.*
 
 class RepoDetailsFragment : Fragment() {
 
@@ -35,14 +33,13 @@ class RepoDetailsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         MainActivity.FRAGMENT_TAG = TAG_REPO_DETAILS_FRAGMENT
+
         arguments?.getLong(DETAILS_ID_BUNDLE_KEY)?.let { id ->
             viewModel.fetchRepo(id)
         }
+
         viewModel.repo.observe(viewLifecycleOwner, { repo ->
             displayRepo(repo)
-        })
-        viewModel.error.observe(viewLifecycleOwner, {
-            Snackbar.make(refresh_layout, it, Snackbar.LENGTH_LONG).show()
         })
     }
 
@@ -50,7 +47,8 @@ class RepoDetailsFragment : Fragment() {
         if (repo == null) return
         details_content.visibility = View.VISIBLE
         description.text = repo.description
-        stars.text = getString(R.string.stargazer_label, Utils.thousandsToKs(repo.stargazers_count))
+        stars.text =
+            getString(R.string.stargazer_label, Utils.thousandsToKs(repo.stargazers_count))
         forks.text = getString(R.string.fork_label, Utils.thousandsToKs(repo.forks))
         owner.text = repo.owner.login
         when {

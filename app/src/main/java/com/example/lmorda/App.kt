@@ -6,5 +6,5 @@ import com.example.lmorda.data.RepoRepository
 class App : Application() {
 
     val repoRepository: RepoRepository
-        get() = ServiceLocator.provideReposRepository()
+        get() = ServiceLocator.provideReposRepository(this)
 }

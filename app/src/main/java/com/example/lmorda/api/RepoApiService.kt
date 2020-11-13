@@ -10,7 +10,12 @@ class RepoApiService internal constructor(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
-    suspend fun getRepos(sort: String, language: String?): List<Repo>? =
+    suspend fun getRepos(
+        sort: String,
+        language: String?,
+        lastPage: Int,
+        pageSize: Int
+    ): List<Repo>? =
         withContext(ioDispatcher) {
             val params = mutableMapOf<String, String>().apply {
                 put(
@@ -19,7 +24,7 @@ class RepoApiService internal constructor(
                 )
             }
             sort.let { params["sort"] = sort }
-            apiService.getRepos(params)?.items
+            apiService.getRepos(params, lastPage, pageSize)?.items
         }
 
 }

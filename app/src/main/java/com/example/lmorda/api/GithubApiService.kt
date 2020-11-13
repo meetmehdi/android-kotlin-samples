@@ -1,7 +1,7 @@
 package com.example.lmorda.api
 
 import com.example.lmorda.GITHUB_BASE_URL
-import com.example.lmorda.data.RepoRepository.Companion.ITEMS_PER_PAGE
+import com.example.lmorda.data.RepoRepository.Companion.NETWORK_PAGE_SIZE
 import com.example.lmorda.model.GithubRepos
 import com.example.lmorda.model.Repo
 import okhttp3.OkHttpClient
@@ -17,7 +17,7 @@ interface GithubApiService {
     companion object {
         fun create(): GithubApiService {
             val client: OkHttpClient = OkHttpClient.Builder()
-                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
                 .build()
             val retrofit = Retrofit.Builder()
                 .baseUrl(GITHUB_BASE_URL)
@@ -32,7 +32,7 @@ interface GithubApiService {
     suspend fun getRepos(
         @QueryMap(encoded = true) q: Map<String, String>,
         @Query("page") page: Int? = 1,
-        @Query("per_page") itemsPerPage: Int? = ITEMS_PER_PAGE
+        @Query("per_page") itemsPerPage: Int? = NETWORK_PAGE_SIZE
     ): GithubRepos?
 
     @GET("/search/repositories")

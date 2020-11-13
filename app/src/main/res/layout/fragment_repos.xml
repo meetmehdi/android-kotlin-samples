@@ -6,24 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+    <!-- TODO: Add this to ReposAdapter -->
+    <ProgressBar
+        android:id="@+id/repos_spinner"
+        style="?android:attr/progressBarStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/repos_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:context=".MainActivity"
-            tools:listitem="@layout/repo_item"/>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/repos_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="64dp"
+        android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:context=".MainActivity"
+        tools:listitem="@layout/repo_item"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

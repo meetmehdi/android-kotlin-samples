@@ -1,31 +1,39 @@
 package com.example.lmorda.repos
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.lmorda.R
 import com.example.lmorda.model.Repo
 
-class ReposAdapter(
-    private val clickListener: (Repo) -> Unit
-) : RecyclerView.Adapter<RepoViewHolder>() {
+class ReposAdapter : PagedListAdapter<Repo, RecyclerView.ViewHolder>(REPO_COMPARATOR) {
 
-    var repos: List<Repo> = listOf()
+    private lateinit var clickListener: (Repo) -> Unit
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
-        return RepoViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.repo_item,
-                parent, false
-            )
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return RepoViewHolder.create(parent)
     }
 
-    override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        val repo = repos.get(position)
-        holder.bindData(repo, clickListener)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is RepoViewHolder) {
+            val repoItem = getItem(position)
+            if (repoItem != null) {
+                holder.bindData(repoItem, clickListener)
+            }
+        }
     }
 
-    override fun getItemCount() = repos.size
+    fun setClickListener(listener: (Repo) -> Unit) {
+        clickListener = listener
+    }
 
+    companion object {
+        private val REPO_COMPARATOR = object : DiffUtil.ItemCallback<Repo>() {
+            override fun areItemsTheSame(oldItem: Repo, newItem: Repo): Boolean =
+                oldItem.description == newItem.description
+
+            override fun areContentsTheSame(oldItem: Repo, newItem: Repo): Boolean =
+                oldItem == newItem
+        }
+    }
 }
