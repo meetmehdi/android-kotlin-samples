@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Github Repos</string>
+    <string name="stargazer_label">%1$s star gazers</string>
+    <string name="fork_label">%1$s repository forks</string>
+</resources>

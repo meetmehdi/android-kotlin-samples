@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/list_item_padding"
+    tools:ignore="RtlSymmetry">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="4dp"
+        android:paddingLeft="4dp"
+        android:paddingEnd="8dp"
+        android:paddingRight="8dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/fork_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="okhttp" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="4dp"
+        android:paddingLeft="4dp"
+        android:paddingEnd="8dp"
+        android:paddingRight="8dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:maxLines="3"
+        android:minLines="2"
+        android:ellipsize="end"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/forks"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        tools:text="Square's meticulous HTTP client for Java and Kotlin." />
+
+    <ImageView
+        android:id="@+id/fork_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingEnd="16dp"
+        android:paddingRight="16dp"
+        app:layout_constraintEnd_toStartOf="@id/star_image"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_baseline_fork_24" />
+
+    <TextView
+        android:id="@+id/forks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="8dp"
+        android:paddingRight="8dp"
+        app:layout_constraintEnd_toStartOf="@id/stars"
+        app:layout_constraintTop_toBottomOf="@id/fork_image"
+        tools:text="20.1k"/>
+
+    <ImageView
+        android:id="@+id/star_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_baseline_star_24"/>
+
+    <TextView
+        android:id="@+id/stars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/star_image"
+        tools:text="34.4k"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
