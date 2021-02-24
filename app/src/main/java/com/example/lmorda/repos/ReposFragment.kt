@@ -10,10 +10,11 @@ import androidx.fragment.app.viewModels
 import com.example.lmorda.MainActivity
 import com.example.lmorda.R
 import com.example.lmorda.TAG_REPOS_FRAGMENT
+import com.example.lmorda.databinding.FragmentRepoDetailsBinding
+import com.example.lmorda.databinding.FragmentReposBinding
 import com.example.lmorda.details.RepoDetailsFragment
 import com.example.lmorda.utils.getViewModelFactory
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_repos.*
 
 class ReposFragment : Fragment() {
 
@@ -27,44 +28,41 @@ class ReposFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_repos, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         MainActivity.FRAGMENT_TAG = TAG_REPOS_FRAGMENT
-        setupListAdapter()
-        setupRefreshLayout()
+        val binding = FragmentReposBinding.bind(view)
+        with (binding) {
+            reposList.adapter = ReposAdapter(
+                clickListener = {
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, RepoDetailsFragment.newInstance(it.id))
+                        .commit()
+                }
+            )
+            refreshLayout.setColorSchemeColors(
+                ContextCompat.getColor(requireActivity(), R.color.colorPrimary),
+                ContextCompat.getColor(requireActivity(), R.color.colorAccent),
+                ContextCompat.getColor(requireActivity(), R.color.colorPrimaryDark)
+            )
+            refreshLayout.setOnRefreshListener {
+                viewModel.fetchRepos(true)
+            }
+        }
         viewModel.fetchRepos(false)
         viewModel.repos.observe(viewLifecycleOwner, {
-            (repos_list.adapter as ReposAdapter).apply {
-                repos = it
-                notifyDataSetChanged()
+            with (binding) {
+                (reposList.adapter as ReposAdapter).apply {
+                    repos = it
+                    notifyDataSetChanged()
+                }
             }
         })
         viewModel.loading.observe(viewLifecycleOwner, {
-            refresh_layout.isRefreshing = it
+            with (binding) { refreshLayout.isRefreshing = it }
         })
         viewModel.error.observe(viewLifecycleOwner, {
-            Snackbar.make(refresh_layout, it, Snackbar.LENGTH_LONG).show()
+            with (binding) { Snackbar.make(refreshLayout, it, Snackbar.LENGTH_LONG).show() }
         })
-    }
-
-    private fun setupListAdapter() {
-        repos_list.adapter = ReposAdapter(
-            clickListener = {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, RepoDetailsFragment.newInstance(it.id))
-                    .commit()
-            }
-        )
-    }
-
-    private fun setupRefreshLayout() {
-        refresh_layout.setColorSchemeColors(
-            ContextCompat.getColor(requireActivity(), R.color.colorPrimary),
-            ContextCompat.getColor(requireActivity(), R.color.colorAccent),
-            ContextCompat.getColor(requireActivity(), R.color.colorPrimaryDark)
-        )
-        refresh_layout.setOnRefreshListener {
-            viewModel.fetchRepos(true)
-        }
     }
 }

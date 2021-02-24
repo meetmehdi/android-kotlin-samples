@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lmorda.R
+import com.example.lmorda.databinding.RepoItemBinding
 import com.example.lmorda.model.Repo
 
 class ReposAdapter(
@@ -22,7 +23,7 @@ class ReposAdapter(
     }
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        val repo = repos.get(position)
+        val repo = repos[position]
         holder.bindData(repo, clickListener)
     }
 
