@@ -23,7 +23,6 @@ class RepoDetailsViewModel(private val repoRepository: RepoRepository) : ViewMod
                 is Result.Success -> _repo.postValue(repo.data)
                 is Result.Error -> _error.postValue(repo.exception.message)
             }
-
         }
     }
 }

@@ -5,7 +5,7 @@ Sample Android projects inspired by Google's architecture blueprints, using the 
 In this project you'll find:
 
 *   A **ViewModel** layer between the Fragment (View) and Repository layers
-*   Reactive UIs using **LiveData** observables and Kotlin synthetics
+*   Reactive UIs using **LiveData** observables and Kotlin synthetics / view bindings
 *   A data layer with a **Repository** and two data sources (Room for local storage and Retrofit for remote data fetching)
 *   Kotlin **Coroutines** for asynchronous pulling of data from database and server
 *   
@@ -20,6 +20,7 @@ In this project you'll find:
  
  * **main** - a simple MVVM architecture using coroutines
  * **paging2** - added the Android Paging2 library
+ * **viewbinding** - replaced kotlin synethics with view binding
 
 ## Acknowledgements
 
