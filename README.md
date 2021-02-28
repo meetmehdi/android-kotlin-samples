@@ -20,7 +20,7 @@ In this project you'll find:
  
  * **main** - a simple MVVM architecture using coroutines
  * **paging2** - added the Android Paging2 library
- * **viewbinding** - replaced kotlin synethics with view binding
+ * **view-binding** - replaced kotlin synthetics with view binding
 
 ## Acknowledgements
 
