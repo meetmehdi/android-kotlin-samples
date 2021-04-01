@@ -2,4 +2,5 @@
     <dimen name="activity_margin">16dp</dimen>
     <dimen name="layout_padding">8dp</dimen>
     <dimen name="list_item_padding">8dp</dimen>
+    <dimen name="widget_margin">8dp</dimen>
 </resources>
