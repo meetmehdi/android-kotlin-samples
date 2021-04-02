@@ -35,6 +35,8 @@ class RepoRepository(
         return Result.Success(repoCache.repos)
     }
 
+    fun getCachedRepos() = repoCache.repos
+
     fun getRepo(id: Long): Result<Repo> {
         return when (val repo = repoCache.repos?.find { it.id == id }) {
             null -> Result.Error(Exception("No repo found by this ID"))
