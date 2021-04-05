@@ -8,11 +8,11 @@
     <fragment
         android:id="@+id/reposFragment"
         android:name="com.example.lmorda.repos.ReposFragment"
-        android:label="RepoList"
+        android:label="ReposFragment"
         tools:layout="@layout/fragment_repos">
 
         <action
-            android:id="@+id/action_repoListFragment_to_repoDetailsFragment"
+            android:id="@+id/action_reposFragment_to_repoDetailsFragment"
             app:destination="@+id/repoDetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/repoDetailsFragment"
         android:name="com.example.lmorda.details.RepoDetailsFragment"
-        android:label="RepoDetail"
+        android:label="RepoDetails"
         tools:layout="@layout/fragment_repo_details"/>
 
 </navigation>

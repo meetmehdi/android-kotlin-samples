@@ -27,8 +27,8 @@ class ReposFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_repos, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupListAdapter()
         setupRefreshLayout()
         viewModel.fetchRepos(false)
@@ -49,7 +49,7 @@ class ReposFragment : Fragment() {
     private fun setupListAdapter() {
         repos_list.adapter = ReposAdapter(
             clickListener = {
-                findNavController().navigate(R.id.action_repoListFragment_to_repoDetailsFragment,
+                findNavController().navigate(R.id.action_reposFragment_to_repoDetailsFragment,
                     bundleOf(DETAILS_ID_BUNDLE_KEY to it.id))
             }
         )

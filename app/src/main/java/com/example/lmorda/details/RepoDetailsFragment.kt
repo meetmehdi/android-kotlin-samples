@@ -30,8 +30,8 @@ class RepoDetailsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_repo_details, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         arguments?.getLong(DETAILS_ID_BUNDLE_KEY)?.let { id ->
             viewModel.fetchRepo(id)
         }
@@ -45,7 +45,6 @@ class RepoDetailsFragment : Fragment() {
 
     private fun displayRepo(repo: Repo?) {
         if (repo == null) return
-        details_content.visibility = View.VISIBLE
         description.text = repo.description
         stars.text = getString(R.string.stargazer_label, Utils.thousandsToKs(repo.stargazers_count))
         forks.text = getString(R.string.fork_label, Utils.thousandsToKs(repo.forks))
