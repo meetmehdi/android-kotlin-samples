@@ -22,6 +22,7 @@ In this project you'll find:
  * **paging2** - added the Android Paging2 library
  * **view-binding** - replaced kotlin synthetics with view binding
  * **widget** - added a very basic Widget to the app
+ * **navigation** - added androidx Navigation
 
 ## Acknowledgements
 
