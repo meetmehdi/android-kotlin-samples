@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.lmorda.DETAILS_ID_BUNDLE_KEY
-import com.example.lmorda.MainActivity
 import com.example.lmorda.R
-import com.example.lmorda.TAG_REPO_DETAILS_FRAGMENT
 import com.example.lmorda.model.Repo
 import com.example.lmorda.utils.Utils
 import com.example.lmorda.utils.getViewModelFactory
@@ -34,7 +32,6 @@ class RepoDetailsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        MainActivity.FRAGMENT_TAG = TAG_REPO_DETAILS_FRAGMENT
         arguments?.getLong(DETAILS_ID_BUNDLE_KEY)?.let { id ->
             viewModel.fetchRepo(id)
         }
@@ -71,14 +68,6 @@ class RepoDetailsFragment : Fragment() {
                     .centerCrop()
                     .into(owner_image)
             else -> owner_image.visibility = View.GONE
-        }
-    }
-
-    companion object {
-        fun newInstance(id: Long): RepoDetailsFragment {
-            val frag = RepoDetailsFragment()
-            frag.arguments = Bundle().apply { putLong(DETAILS_ID_BUNDLE_KEY, id) }
-            return frag
         }
     }
 }

@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.lmorda.MainActivity
+import androidx.navigation.fragment.findNavController
+import com.example.lmorda.DETAILS_ID_BUNDLE_KEY
 import com.example.lmorda.R
-import com.example.lmorda.TAG_REPOS_FRAGMENT
-import com.example.lmorda.details.RepoDetailsFragment
 import com.example.lmorda.utils.getViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_repos.*
@@ -29,7 +29,6 @@ class ReposFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        MainActivity.FRAGMENT_TAG = TAG_REPOS_FRAGMENT
         setupListAdapter()
         setupRefreshLayout()
         viewModel.fetchRepos(false)
@@ -50,9 +49,8 @@ class ReposFragment : Fragment() {
     private fun setupListAdapter() {
         repos_list.adapter = ReposAdapter(
             clickListener = {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, RepoDetailsFragment.newInstance(it.id))
-                    .commit()
+                findNavController().navigate(R.id.action_repoListFragment_to_repoDetailsFragment,
+                    bundleOf(DETAILS_ID_BUNDLE_KEY to it.id))
             }
         )
     }
