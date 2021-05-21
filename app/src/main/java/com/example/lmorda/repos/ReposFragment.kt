@@ -25,13 +25,9 @@ class ReposFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_repos, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        MainActivity.FRAGMENT_TAG = TAG_REPOS_FRAGMENT
+        val view = inflater.inflate(R.layout.fragment_repos, container, false)
         val binding = FragmentReposBinding.bind(view)
+        MainActivity.FRAGMENT_TAG = TAG_REPOS_FRAGMENT
         with (binding) {
             reposList.adapter = ReposAdapter(
                 clickListener = {
@@ -64,5 +60,6 @@ class ReposFragment : Fragment() {
         viewModel.error.observe(viewLifecycleOwner, {
             with (binding) { Snackbar.make(refreshLayout, it, Snackbar.LENGTH_LONG).show() }
         })
+        return view
     }
 }

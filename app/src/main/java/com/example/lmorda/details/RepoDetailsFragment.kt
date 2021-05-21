@@ -27,16 +27,12 @@ class RepoDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_repo_details, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val view = inflater.inflate(R.layout.fragment_repo_details, container, false)
+        val binding = FragmentRepoDetailsBinding.bind(view)
         MainActivity.FRAGMENT_TAG = TAG_REPO_DETAILS_FRAGMENT
         arguments?.getLong(DETAILS_ID_BUNDLE_KEY)?.let { id ->
             viewModel.fetchRepo(id)
         }
-        val binding = FragmentRepoDetailsBinding.bind(view)
         viewModel.repo.observe(viewLifecycleOwner, { repo ->
             with (binding) {
                 detailsContent.visibility = View.VISIBLE
@@ -71,6 +67,7 @@ class RepoDetailsFragment : Fragment() {
                 Snackbar.make(description, it, Snackbar.LENGTH_LONG).show()
             }
         })
+        return view
     }
 
     companion object {
