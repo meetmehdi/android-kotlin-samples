@@ -4,17 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.lmorda.MainActivity
 import com.example.lmorda.R
 import com.example.lmorda.TAG_REPOS_FRAGMENT
-import com.example.lmorda.databinding.FragmentRepoDetailsBinding
 import com.example.lmorda.databinding.FragmentReposBinding
 import com.example.lmorda.details.RepoDetailsFragment
+import com.example.lmorda.repos.ReposViewModel.*
+import com.example.lmorda.utils.display
 import com.example.lmorda.utils.getViewModelFactory
-import com.google.android.material.snackbar.Snackbar
+import com.example.lmorda.utils.setSpinnerColors
+import com.example.lmorda.utils.showSnack
 
 class ReposFragment : Fragment() {
 
@@ -36,30 +37,17 @@ class ReposFragment : Fragment() {
                         .commit()
                 }
             )
-            refreshLayout.setColorSchemeColors(
-                ContextCompat.getColor(requireActivity(), R.color.colorPrimary),
-                ContextCompat.getColor(requireActivity(), R.color.colorAccent),
-                ContextCompat.getColor(requireActivity(), R.color.colorPrimaryDark)
-            )
-            refreshLayout.setOnRefreshListener {
-                viewModel.fetchRepos(true)
-            }
-        }
-        viewModel.fetchRepos(false)
-        viewModel.repos.observe(viewLifecycleOwner, {
-            with (binding) {
-                (reposList.adapter as ReposAdapter).apply {
-                    repos = it
-                    notifyDataSetChanged()
+            refreshLayout.setSpinnerColors(requireActivity())
+            refreshLayout.setOnRefreshListener { viewModel.fetchRepos(true) }
+            viewModel.fetchRepos(false)
+            viewModel.viewState.observe(viewLifecycleOwner, {
+                when (it) {
+                    is ViewState.Loading -> refreshLayout.isRefreshing = it.isLoading
+                    is ViewState.Success -> (reposList.adapter as ReposAdapter).display(it.repos)
+                    is ViewState.Error -> showSnack(refreshLayout, it.resId)
                 }
-            }
-        })
-        viewModel.loading.observe(viewLifecycleOwner, {
-            with (binding) { refreshLayout.isRefreshing = it }
-        })
-        viewModel.error.observe(viewLifecycleOwner, {
-            with (binding) { Snackbar.make(refreshLayout, it, Snackbar.LENGTH_LONG).show() }
-        })
+            })
+        }
         return view
     }
 }

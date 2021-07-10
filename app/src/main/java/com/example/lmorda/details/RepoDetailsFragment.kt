@@ -14,8 +14,9 @@ import com.example.lmorda.MainActivity
 import com.example.lmorda.R
 import com.example.lmorda.TAG_REPO_DETAILS_FRAGMENT
 import com.example.lmorda.databinding.FragmentRepoDetailsBinding
-import com.example.lmorda.utils.Utils
 import com.example.lmorda.utils.getViewModelFactory
+import com.example.lmorda.utils.showSnack
+import com.example.lmorda.utils.thousandsToKs
 import com.google.android.material.snackbar.Snackbar
 
 class RepoDetailsFragment : Fragment() {
@@ -29,17 +30,20 @@ class RepoDetailsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_repo_details, container, false)
         val binding = FragmentRepoDetailsBinding.bind(view)
+        //TODO: Add navigation
         MainActivity.FRAGMENT_TAG = TAG_REPO_DETAILS_FRAGMENT
         arguments?.getLong(DETAILS_ID_BUNDLE_KEY)?.let { id ->
             viewModel.fetchRepo(id)
         }
-        viewModel.repo.observe(viewLifecycleOwner, { repo ->
-            with (binding) {
+        with (binding) {
+            viewModel.error.observe(viewLifecycleOwner, { showSnack(description, it) })
+            viewModel.repo.observe(viewLifecycleOwner, { repo ->
                 detailsContent.visibility = View.VISIBLE
                 description.text = repo.description
-                stars.text = getString(R.string.stargazer_label, Utils.thousandsToKs(repo.stargazers_count))
-                forks.text = getString(R.string.fork_label, Utils.thousandsToKs(repo.forks))
+                stars.text = getString(R.string.stargazer_label, thousandsToKs(repo.stargazers_count))
+                forks.text = getString(R.string.fork_label, thousandsToKs(repo.forks))
                 owner.text = repo.owner.login
+                //TODO: Replace with placeholder
                 when {
                     !repo.html_url.isNullOrEmpty() -> {
                         url.text = repo.html_url
@@ -49,8 +53,8 @@ class RepoDetailsFragment : Fragment() {
                         }
                     }
                     else -> url.visibility = View.GONE
-
                 }
+                //TODO: Replace with placeholder
                 when {
                     !repo.owner.avatar_url.isNullOrEmpty() ->
                         Glide.with(requireActivity())
@@ -59,14 +63,8 @@ class RepoDetailsFragment : Fragment() {
                             .into(ownerImage)
                     else -> ownerImage.visibility = View.GONE
                 }
-            }
-
-        })
-        viewModel.error.observe(viewLifecycleOwner, {
-            with (binding) {
-                Snackbar.make(description, it, Snackbar.LENGTH_LONG).show()
-            }
-        })
+            })
+        }
         return view
     }
 
