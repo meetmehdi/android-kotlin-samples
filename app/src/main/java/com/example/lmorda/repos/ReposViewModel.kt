@@ -38,7 +38,6 @@ class ReposViewModel(private val repoRepository: RepoRepository) : ViewModel() {
                 is Result.Error -> _viewState.postValue(
                     ViewState.Error(R.string.repos_error))
             }
-            _viewState.postValue(ViewState.Loading(false))
         }
     }
 }

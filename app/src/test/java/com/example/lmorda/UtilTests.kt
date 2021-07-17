@@ -1,6 +1,6 @@
 package com.example.lmorda
 
-import com.example.lmorda.utils.Utils
+import com.example.lmorda.utils.thousandsToKs
 import org.junit.Test
 import org.junit.Assert.*
 
@@ -9,7 +9,7 @@ class UtilTests {
 
     @Test
     fun thousands_OneThousand() {
-        assertEquals(Utils.thousandsToKs(1000), "1.0k")
+        assertEquals(1000.thousandsToKs(), "1.0k")
     }
 
 }

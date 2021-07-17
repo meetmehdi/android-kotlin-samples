@@ -67,6 +67,10 @@ dependencies {
     // LeakCanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
 
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.4"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.4"
+
     // Testing
     testImplementation 'junit:junit:4.13'
 }
