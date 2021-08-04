@@ -29,15 +29,14 @@ class RepoDetailsViewModelTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun testSomething() {
-
+    fun testBasicFunctionality() {
         mainCoroutineRule.runBlockingTest {
             val result = repoRepository.getRepo(0L)
-            assertEquals("string", when (result) {
-                is Result.Success -> result.data.description
-                else -> ""
-            })
+            val githubRepo = when (result) {
+                is Result.Success -> result.data
+                else -> null
+            }
+            assertEquals("description", githubRepo?.description)
         }
-
     }
 }

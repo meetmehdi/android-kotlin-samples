@@ -12,18 +12,18 @@ class MockRepoRepository : RepoDataRepository {
         language: String?
     ): Result<List<Repo>?> {
         return Result.Success(listOf(
-            Repo(id = 0L, name = "string", description = "string", html_url = "string",
-                stargazers_count = 0, forks = 0, pushed_at = "string", language = "string",
-                owner = Owner(login = "string", avatar_url = "string")
+            Repo(id = 0L, name = "name", description = "description", html_url = "html_url",
+                stargazers_count = 0, forks = 0, pushed_at = "pushed_at", language = "language",
+                owner = Owner(login = "login", avatar_url = "avatar_url")
             )
         ))
     }
 
     override suspend fun getRepo(id: Long): Result<Repo> {
         return Result.Success(
-            Repo(id = 0L, name = "string", description = "string", html_url = "string",
-                stargazers_count = 0, forks = 0, pushed_at = "string", language = "string",
-                owner = Owner(login = "string", avatar_url = "string")
+            Repo(id = 0L, name = "name", description = "description", html_url = "html_url",
+                stargazers_count = 0, forks = 0, pushed_at = "pushed_at", language = "language",
+                owner = Owner(login = "login", avatar_url = "avatar_url")
             )
         )
     }
