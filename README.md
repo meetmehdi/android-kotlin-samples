@@ -6,7 +6,7 @@ In this project you'll find:
 
 *   A **ViewModel** layer between the Fragment (View) and Repository layers
 *   Reactive UIs using **LiveData** observables and Kotlin synthetics / view bindings
-*   A data layer with a **Repository** and two data sources (Room for local storage and Retrofit for remote data fetching)
+*   A **Repository** layer and Retrofit API service for remote data fetching
 *   Kotlin **Coroutines** for asynchronous pulling of data from database and server
 
 ## Getting Started
@@ -20,7 +20,7 @@ In this project you'll find:
  
  * **main** - a simple MVVM architecture using coroutines
  * **paging2** - added the Android Paging2 library
- * **view-binding** - replaced kotlin synthetics with view binding
+ * **view-binding** - replaced kotlin synthetics with view binding and added ViewModel unit testing
  * **widget** - added a very basic Widget to the app
  * **navigation** - added androidx Navigation
 
