@@ -13,8 +13,10 @@ In this project you'll find:
 
  * Clone this repository
  * Open the Project with Android Studio
- * Checkout a branch - Note: view-binding branch is the most up-to-date and my preferred architecture right now!
+ * Checkout a branch
  * Run the app
+
+Note: The branch `view-binding ` is the most up-to-date!
 
 ## Branches
  
