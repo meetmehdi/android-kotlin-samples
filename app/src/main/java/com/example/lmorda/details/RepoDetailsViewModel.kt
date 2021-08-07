@@ -4,12 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.lmorda.data.RepoDataRepository
 import com.example.lmorda.data.RepoRepository
 import com.example.lmorda.data.Result
 import com.example.lmorda.model.Repo
 import kotlinx.coroutines.launch
 
-class RepoDetailsViewModel(private val repoRepository: RepoRepository) : ViewModel() {
+class RepoDetailsViewModel(private val repoRepository: RepoDataRepository) : ViewModel() {
 
     private val _error = MutableLiveData<Int>()
     val error: LiveData<Int> = _error
