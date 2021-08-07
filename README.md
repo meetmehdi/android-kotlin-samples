@@ -13,14 +13,14 @@ In this project you'll find:
 
  * Clone this repository
  * Open the Project with Android Studio
- * Checkout a branch
+ * Checkout a branch - Note: view-binding branch is the most up-to-date and my preferred architecture right now!
  * Run the app
 
 ## Branches
  
  * **main** - a simple MVVM architecture using coroutines
  * **paging2** - added the Android Paging2 library
- * **view-binding** - replaced kotlin synthetics with view binding and added ViewModel unit testing
+ * **view-binding** - replaced kotlin synthetics with view binding, also includes navigation and ViewModel unit testing
  * **widget** - added a very basic Widget to the app
  * **navigation** - added androidx Navigation
 
