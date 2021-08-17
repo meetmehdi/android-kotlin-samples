@@ -13,12 +13,9 @@ import com.example.lmorda.DETAILS_ID_BUNDLE_KEY
 import com.example.lmorda.MainActivity
 import com.example.lmorda.R
 import com.example.lmorda.TAG_REPO_DETAILS_FRAGMENT
-import com.example.lmorda.model.Repo
-import com.example.lmorda.utils.Utils
-import com.example.lmorda.utils.getViewModelFactory
+import com.example.lmorda.databinding.FragmentRepoDetailsBinding
+import com.example.lmorda.utils.*
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_repo_details.*
-import kotlinx.android.synthetic.main.fragment_repos.*
 
 class RepoDetailsFragment : Fragment() {
 
@@ -29,56 +26,34 @@ class RepoDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_repo_details, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        MainActivity.FRAGMENT_TAG = TAG_REPO_DETAILS_FRAGMENT
+        val view = inflater.inflate(R.layout.fragment_repo_details, container, false)
+        val binding = FragmentRepoDetailsBinding.bind(view)
         arguments?.getLong(DETAILS_ID_BUNDLE_KEY)?.let { id ->
             viewModel.fetchRepo(id)
         }
-        viewModel.repo.observe(viewLifecycleOwner, { repo ->
-            displayRepo(repo)
-        })
-        viewModel.error.observe(viewLifecycleOwner, {
-            Snackbar.make(refresh_layout, it, Snackbar.LENGTH_LONG).show()
-        })
-    }
-
-    private fun displayRepo(repo: Repo?) {
-        if (repo == null) return
-        details_content.visibility = View.VISIBLE
-        description.text = repo.description
-        stars.text = getString(R.string.stargazer_label, Utils.thousandsToKs(repo.stargazers_count))
-        forks.text = getString(R.string.fork_label, Utils.thousandsToKs(repo.forks))
-        owner.text = repo.owner.login
-        when {
-            !repo.html_url.isNullOrEmpty() -> {
-                url.text = repo.html_url
-                url.setOnClickListener {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(repo.html_url))
-                    it.context.startActivity(intent)
+        with (binding) {
+            viewModel.error.observe(viewLifecycleOwner, { showSnack(description, it) })
+            viewModel.repo.observe(viewLifecycleOwner, { repo ->
+                description.text = repo.description
+                stars.text = getString(R.string.stargazer_label, repo.stargazers_count.thousandsToKs())
+                forks.text = getString(R.string.fork_label, repo.forks.thousandsToKs())
+                owner.text = repo.owner.login
+                when {
+                    !repo.html_url.isNullOrEmpty() ->
+                        url.setUrlClickListener(repo.html_url)
+                    else -> {
+                        url.visibility = View.GONE
+                        urlImage.visibility = View.GONE
+                    }
                 }
-            }
-            else -> url.visibility = View.GONE
-
+                when {
+                    !repo.owner.avatar_url.isNullOrEmpty() ->
+                        ownerImage.glideMe(requireActivity(), repo.owner.avatar_url)
+                    else ->
+                        ownerImage.visibility = View.GONE
+                }
+            })
         }
-        when {
-            !repo.owner.avatar_url.isNullOrEmpty() ->
-                Glide.with(requireActivity())
-                    .load(repo.owner.avatar_url)
-                    .centerCrop()
-                    .into(owner_image)
-            else -> owner_image.visibility = View.GONE
-        }
-    }
-
-    companion object {
-        fun newInstance(id: Long): RepoDetailsFragment {
-            val frag = RepoDetailsFragment()
-            frag.arguments = Bundle().apply { putLong(DETAILS_ID_BUNDLE_KEY, id) }
-            return frag
-        }
+        return view
     }
 }

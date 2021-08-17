@@ -2,4 +2,7 @@
     <string name="app_name">Github Repos</string>
     <string name="stargazer_label">%1$s star gazers</string>
     <string name="fork_label">%1$s repository forks</string>
+    <string name="owner_image">owner image</string>
+    <string name="repo_error">Could not find repo</string>
+    <string name="repos_error">Could not get repos</string>
 </resources>

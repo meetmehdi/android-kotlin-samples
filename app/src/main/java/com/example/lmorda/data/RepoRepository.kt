@@ -1,8 +1,7 @@
 package com.example.lmorda.data
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import com.example.lmorda.R
 import com.example.lmorda.STARGAZER_COUNT
 import com.example.lmorda.TAG_LOG
 import com.example.lmorda.api.RepoApiService
@@ -12,32 +11,27 @@ import com.example.lmorda.model.Repo
 class RepoRepository(
     private val repoAPI: RepoApiService,
     private val repoCache: RepoCache
-) {
+): RepoDataRepository {
 
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean> = _loading
-
-    suspend fun getRepos(
-        forceRefresh: Boolean = false,
-        sort: String = STARGAZER_COUNT,
-        language: String? = null
+    override suspend fun getRepos(
+        forceRefresh: Boolean,
+        sort: String,
+        language: String?
     ): Result<List<Repo>?> {
         if (forceRefresh || repoCache.repos.isNullOrEmpty()) {
-            _loading.postValue(true)
             try {
                 repoCache.repos = repoAPI.getRepos(sort, language)
             } catch (ex: Exception) {
                 Log.e(TAG_LOG, ex.toString())
-                return Result.Error(ex)
+                return Result.Error(R.string.repo_error)
             }
-            _loading.postValue(false)
         }
         return Result.Success(repoCache.repos)
     }
 
-    fun getRepo(id: Long): Result<Repo> {
+    override suspend fun getRepo(id: Long): Result<Repo> {
         return when (val repo = repoCache.repos?.find { it.id == id }) {
-            null -> Result.Error(Exception("No repo found by this ID"))
+            null -> Result.Error(R.string.repo_error)
             else -> Result.Success(repo)
         }
     }

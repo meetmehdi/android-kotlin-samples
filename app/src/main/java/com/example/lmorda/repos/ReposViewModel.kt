@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.lmorda.R
 import com.example.lmorda.SORT_STARS
 import com.example.lmorda.data.RepoRepository
 import com.example.lmorda.data.Result
@@ -12,23 +13,29 @@ import kotlinx.coroutines.launch
 
 class ReposViewModel(private val repoRepository: RepoRepository) : ViewModel() {
 
-    val loading: LiveData<Boolean> = repoRepository.loading
+    sealed class ViewState {
+        data class Loading(val isLoading: Boolean): ViewState()
+        data class Error(val resId: Int): ViewState()
+        data class Success(val repos: List<Repo>): ViewState()
+    }
 
-    private val _error = MutableLiveData<String>()
-    val error: LiveData<String> = _error
-
-    private val _repos = MutableLiveData<List<Repo>>()
-    val repos: LiveData<List<Repo>> = _repos
+    private val _viewState = MutableLiveData<ViewState>()
+    val viewState: LiveData<ViewState> = _viewState
 
     fun fetchRepos(forceRefresh: Boolean) {
         viewModelScope.launch {
-            val repos = repoRepository.getRepos(
+            _viewState.postValue(ViewState.Loading(true))
+            val result = repoRepository.getRepos(
                 forceRefresh = forceRefresh,
                 sort = SORT_STARS
             )
-            when (repos) {
-                is Result.Success -> _repos.postValue(repos.data)
-                is Result.Error -> _error.postValue(repos.exception.message)
+            when (result) {
+                is Result.Success -> _viewState.postValue(
+                    result.data?.let { ViewState.Success(it) }
+                        ?: ViewState.Error(R.string.repos_error)
+                )
+                is Result.Error -> _viewState.postValue(
+                    ViewState.Error(R.string.repos_error))
             }
         }
     }

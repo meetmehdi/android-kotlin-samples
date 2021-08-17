@@ -4,16 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.lmorda.MainActivity
+import androidx.navigation.fragment.findNavController
+import com.example.lmorda.DETAILS_ID_BUNDLE_KEY
 import com.example.lmorda.R
-import com.example.lmorda.TAG_REPOS_FRAGMENT
-import com.example.lmorda.details.RepoDetailsFragment
+import com.example.lmorda.databinding.FragmentReposBinding
+import com.example.lmorda.repos.ReposViewModel.*
+import com.example.lmorda.utils.display
 import com.example.lmorda.utils.getViewModelFactory
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_repos.*
+import com.example.lmorda.utils.setSpinnerColors
+import com.example.lmorda.utils.showSnack
 
 class ReposFragment : Fragment() {
 
@@ -24,47 +26,33 @@ class ReposFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_repos, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        MainActivity.FRAGMENT_TAG = TAG_REPOS_FRAGMENT
-        setupListAdapter()
-        setupRefreshLayout()
-        viewModel.fetchRepos(false)
-        viewModel.repos.observe(viewLifecycleOwner, {
-            (repos_list.adapter as ReposAdapter).apply {
-                repos = it
-                notifyDataSetChanged()
-            }
-        })
-        viewModel.loading.observe(viewLifecycleOwner, {
-            refresh_layout.isRefreshing = it
-        })
-        viewModel.error.observe(viewLifecycleOwner, {
-            Snackbar.make(refresh_layout, it, Snackbar.LENGTH_LONG).show()
-        })
-    }
-
-    private fun setupListAdapter() {
-        repos_list.adapter = ReposAdapter(
-            clickListener = {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, RepoDetailsFragment.newInstance(it.id))
-                    .commit()
-            }
-        )
-    }
-
-    private fun setupRefreshLayout() {
-        refresh_layout.setColorSchemeColors(
-            ContextCompat.getColor(requireActivity(), R.color.colorPrimary),
-            ContextCompat.getColor(requireActivity(), R.color.colorAccent),
-            ContextCompat.getColor(requireActivity(), R.color.colorPrimaryDark)
-        )
-        refresh_layout.setOnRefreshListener {
-            viewModel.fetchRepos(true)
+        val view = inflater.inflate(R.layout.fragment_repos, container, false)
+        val binding = FragmentReposBinding.bind(view)
+        with (binding) {
+            refreshLayout.setSpinnerColors(requireActivity())
+            refreshLayout.setOnRefreshListener { viewModel.fetchRepos(true) }
+            reposList.adapter = ReposAdapter(
+                clickListener = {
+                findNavController().navigate(R.id.action_reposFragment_to_repoDetailsFragment,
+                    bundleOf(DETAILS_ID_BUNDLE_KEY to it.id))
+            })
+            viewModel.fetchRepos(false)
+            viewModel.viewState.observe(viewLifecycleOwner, {
+                when (it) {
+                    is ViewState.Loading -> {
+                        refreshLayout.isRefreshing = it.isLoading
+                    }
+                    is ViewState.Success -> {
+                        (reposList.adapter as ReposAdapter).display(it.repos)
+                        refreshLayout.isRefreshing = false
+                    }
+                    is ViewState.Error -> {
+                        showSnack(refreshLayout, it.resId)
+                        refreshLayout.isRefreshing = false
+                    }
+                }
+            })
         }
+        return view
     }
 }
